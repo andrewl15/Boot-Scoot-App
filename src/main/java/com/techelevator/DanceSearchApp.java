@@ -16,7 +16,7 @@ public class DanceSearchApp {
         UserDanceManager userDanceManager = new UserDanceManager();
         UserDanceMenu userMenu = new UserDanceMenu();
 
-        System.out.println("🎵 Welcome to Line Dance Finder!");
+        System.out.println("Welcome to Line Dance Finder!");
         boolean running = true;
         while (running) {
             System.out.println("\nPlease select an option:");
@@ -69,7 +69,7 @@ public class DanceSearchApp {
                     }
                     break;
                 case "2":
-                    String userInput = userMenu.PrintMainUserDanceMenu();
+                    String userInput = userMenu.PrintMainUserDanceMenu(scanner);
                     switch (userInput) {
                         case "1":
                             System.out.println();
@@ -78,6 +78,10 @@ public class DanceSearchApp {
                         case "2":
                             System.out.println();
                             userDanceManager.printDanceNames();
+                            if (userDanceManager.getUserDances().isEmpty()) {
+                                System.out.println("Your dance list is empty. Please add a dance first.");
+                                break;
+                            }
                             System.out.println("Please choose the song to be checked off: ");
                             userInput = scanner.nextLine();
                             userDanceManager.MarkDanceAsLearned(userDanceManager.getUserDance(Integer.parseInt(userInput) - 1));
@@ -85,6 +89,10 @@ public class DanceSearchApp {
                         case "3":
                             System.out.println();
                             userDanceManager.printDanceNames();
+                            if (userDanceManager.getUserDances().isEmpty()) {
+                                System.out.println("Your dance list is empty. Please add a dance first.");
+                                break;
+                            }
                             System.out.println("Please choose the song to be removed");
                             userInput = scanner.nextLine();
                             userDanceManager.removeDance(userDanceManager.getUserDance(Integer.parseInt(userInput) - 1));
@@ -103,8 +111,7 @@ public class DanceSearchApp {
             }
 
         }
-
-        System.out.println("\nGoodbye! 👋");
+        System.out.println("\nGoodbye! Thanks for using Line Dance Finder!");
         scanner.close();
     }
 }

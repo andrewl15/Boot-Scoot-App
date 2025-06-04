@@ -30,6 +30,10 @@ public class UserDanceManager {
 
     public void printDances() {
         int counter = 1;
+        if (userDances.isEmpty()) {
+            System.out.println("No dances found in your list.");
+            return;
+        }
         for (UserDance userDance : userDances) {
             System.out.println("Dance " + counter + ")");
             System.out.println();
@@ -42,6 +46,10 @@ public class UserDanceManager {
     }
 
     public void printDanceNames() {
+        if (userDances.isEmpty()) {
+            System.out.println("No dances found in your list.");
+            return;
+        }
         int counter = 1;
         for (UserDance userDance : userDances) {
             System.out.println(counter + ") " + userDance.getTitle());
