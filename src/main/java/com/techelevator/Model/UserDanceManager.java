@@ -13,16 +13,38 @@ public class UserDanceManager {
     public List<UserDance> getUserDances() {
         return userDances;
     }
+
+    public UserDance getUserDance(int index) {
+        return userDances.get(index);
+    }
+
+    public void MarkDanceAsLearned(UserDance userDance) {
+        userDance.setLearned(true);
+        System.out.println(userDance.getTitle() + " is learned!");
+    }
     
     public void removeDance(UserDance userDance) {
         userDances.remove(userDance);
+        System.out.println(userDance.getTitle() + " is removed!");
     }
+
     public void printDances() {
+        int counter = 1;
         for (UserDance userDance : userDances) {
+            System.out.println(counter + ")");
             System.out.println(userDance);
-            if (userDances.size() > 1) {
+            counter++;
+            if (counter > 1) {
                 System.out.println("----------------------------------------------------------");
             }
+        }
+    }
+
+    public void printDanceNames() {
+        int counter = 1;
+        for (UserDance userDance : userDances) {
+            System.out.println(counter + ") " + userDance.getTitle());
+            counter++;
         }
     }
 

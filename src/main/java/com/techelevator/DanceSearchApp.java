@@ -3,6 +3,7 @@ package com.techelevator;
 import com.techelevator.Model.UserDance;
 import com.techelevator.Model.UserDanceManager;
 import com.techelevator.Services.Scraper;
+import com.techelevator.Services.UserDanceMenu;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,13 +14,14 @@ public class DanceSearchApp {
         Scanner scanner = new Scanner(System.in);
         Scraper scraper = new Scraper();
         UserDanceManager userDanceManager = new UserDanceManager();
+        UserDanceMenu userMenu = new UserDanceMenu();
 
         System.out.println("🎵 Welcome to Line Dance Finder!");
         boolean running = true;
         while (running) {
             System.out.println("\nPlease select an option:");
-            System.out.println("1) Find Dances");
-            System.out.println("2) View Your List of Dances");
+            System.out.println("1) Dance Search");
+            System.out.println("2) User Dance Menu");
             System.out.println("3) Exit");
             String input = scanner.nextLine();
 
@@ -47,10 +49,10 @@ public class DanceSearchApp {
 
                         if (choice >= 0 && choice < results.size()) {
                             UserDance dance = scraper.getDanceDetails(results.get(choice));
-                            System.out.println("\n📋 Dance Details:");
+                            System.out.println("\nDance Details:");
                             System.out.println(dance);
 
-                            System.out.print("\nWould you like to save this dance? (yes/no): ");
+                            System.out.print("\nWould you like to add this dance to your list? (yes/no): ");
                             if (scanner.nextLine().equalsIgnoreCase("yes")) {
                                 userDanceManager.addDance(dance);
                                 System.out.println("Dance saved!");
@@ -67,8 +69,27 @@ public class DanceSearchApp {
                     }
                     break;
                 case "2":
-                    System.out.println("\n💾 Saved Dances:");
-                    userDanceManager.printDances();
+                    String userInput = userMenu.PrintMainUserDanceMenu();
+                    switch (userInput) {
+                        case "1":
+                            userDanceManager.printDances();
+                            break;
+                        case "2":
+                            userDanceManager.printDanceNames();
+                            System.out.println("Please choose the song to be checked off: ");
+                            userInput = scanner.nextLine();
+                            userDanceManager.MarkDanceAsLearned(userDanceManager.getUserDance(Integer.parseInt(userInput) - 1));
+                            break;
+                        case "3":
+                            userDanceManager.printDanceNames();
+                            System.out.println("Please choose the song to be removed");
+                            userInput = scanner.nextLine();
+                            userDanceManager.removeDance(userDanceManager.getUserDance(Integer.parseInt(userInput) - 1));
+                            break;
+                        case "4":
+                            System.out.println("Returning to Main Menu");
+                            break;
+                    }
                     break;
                 case "3":
                     running = false;
