@@ -31,7 +31,8 @@ public class UserDanceManager {
     public void printDances() {
         int counter = 1;
         for (UserDance userDance : userDances) {
-            System.out.println(counter + ")");
+            System.out.println("Dance " + counter + ")");
+            System.out.println();
             System.out.println(userDance);
             counter++;
             if (counter > 1) {

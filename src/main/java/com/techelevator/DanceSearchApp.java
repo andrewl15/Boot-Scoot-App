@@ -72,21 +72,25 @@ public class DanceSearchApp {
                     String userInput = userMenu.PrintMainUserDanceMenu();
                     switch (userInput) {
                         case "1":
+                            System.out.println();
                             userDanceManager.printDances();
                             break;
                         case "2":
+                            System.out.println();
                             userDanceManager.printDanceNames();
                             System.out.println("Please choose the song to be checked off: ");
                             userInput = scanner.nextLine();
                             userDanceManager.MarkDanceAsLearned(userDanceManager.getUserDance(Integer.parseInt(userInput) - 1));
                             break;
                         case "3":
+                            System.out.println();
                             userDanceManager.printDanceNames();
                             System.out.println("Please choose the song to be removed");
                             userInput = scanner.nextLine();
                             userDanceManager.removeDance(userDanceManager.getUserDance(Integer.parseInt(userInput) - 1));
                             break;
                         case "4":
+                            System.out.println();
                             System.out.println("Returning to Main Menu");
                             break;
                     }
