@@ -5,11 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application {
-    
+
     public static void main(String[] args) {
-        //SpringApplication.run(Application.class, args);
-        DanceSearchApp danceSearchApp = new DanceSearchApp();
-        danceSearchApp.Run();
+        SpringApplication.run(Application.class, args);
     }
 
 }
