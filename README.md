@@ -1,4 +1,4 @@
-# LineDancingApp
+# Boot-Scoot-App
 
 Welcome to my Line Dancing tool!
 
