@@ -1,50 +1,44 @@
-# Welcome to your Expo app 👋
-
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+# Final Capstone React Project Starter
+​
+This is the React starter project for the final capstone. This document walks you through how to set up and run the project. It also explains the project's features, such as React Router and authentication.
+​
+## Project setup
+​
+The first thing you'll need to do is to download any dependencies by running this command:
+​
+```
+npm install
+```
+​
+Next take a moment to review the `.env` file that's located in the root of the project. You can store environment variables that you want to use throughout your application in this file. When you open it, it'll look like this:
+​
+```
+VITE_REMOTE_API=http://localhost:9000
+```
+​
+*Note:* the Java Spring Boot application is configured to run on port `9000` instead of `8080`.
+​
+Start your React application with the following command:
+​
+```
+npm run dev
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Application styling
 
-## Learn more
+The application includes two global CSS files—`public/css/global.css` and `public/css/reset.css`—that provide some basic styling to give you a starting point. You're free to change and modify these files to style the application how you want.
+​
+## Authentication
+​
+When you first run the project and visit the base URL, you're taken to the home page at the route `/`. There's a side nav with a link to the login page. From there you can login (see the server instructions for default credentials) or register a new user.
 
-To learn more about developing your project with Expo, look at the following resources:
+Once you log in, the nav changes to have links to "Profile" (a protected route) and logout. The route for "Profile" uses the `<ProtectedRoute>` component to verify there's a logged-in user before rendering the content.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+The authentications features work as you've seen in the curriculum already:
 
-## Join the community
+* `src/context/UserContext.jsx` is the user data context for providing user data to other components
+* In `src/App.jsx`:
+  * There are two functions to manage the logging in and logging out—`handleLogin()` and `handleLogout()`
+  * The `useEffect` Hook retrieves the stored user and token from `localStorage` when the user returns the to page
+  * The `<UserContext.Provider>` surrounds most of the application code to provide the user context to any component that requests it
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
