@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import java.security.Principal;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/dance")
 public class DanceController {
     private DanceDao danceDao;
@@ -32,7 +34,7 @@ public class DanceController {
     }
 
     @GetMapping(path = "/{id}")
-    public Dance getCampaignById(@PathVariable int id) {
+    public Dance getDanceById(@PathVariable int id) {
         Dance output = null;
 
         try {
@@ -48,7 +50,7 @@ public class DanceController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/")
-    public Dance addNewCampaign(@Valid @RequestBody Dance incoming, Principal principal) {
+    public Dance addNewDance(@Valid @RequestBody Dance incoming, Principal principal) {
         if (principal == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User must be authenticated");
         }

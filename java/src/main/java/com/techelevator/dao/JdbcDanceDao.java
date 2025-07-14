@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.techelevator.exception.DaoException;
 import com.techelevator.model.Dance;
 
-@PreAuthorize("isAuthenticated()")
 @Component
 public class JdbcDanceDao implements DanceDao {
     private final JdbcTemplate jdbcTemplate;

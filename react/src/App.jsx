@@ -10,6 +10,7 @@ import UserProfileView from './views/UserProfileView/UserProfileView';
 import MainNav from './components/MainNav/MainNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import axios from 'axios';
+import DanceSearchView from './views/DanceSearchView/DanceSearchView';
 
 export default function App() {
   const [user, setUser] = useState(() => getTokenFromStorage());
@@ -67,6 +68,7 @@ export default function App() {
               <Route path="/login" element={<LoginView onLogin={handleLogin} />} />
               <Route path="/logout" element={<LogoutView onLogout={handleLogout} />} />
               <Route path="/register" element={<RegisterView />} />
+              <Route path="/danceSearch" element={<DanceSearchView />} />
               <Route
                 path="/userProfile"
                 element={

@@ -24,11 +24,18 @@ export default function MainNav() {
           </div>
         </>
       ) : (
-        <div className="nav-link">
-          <NavLink to="/login">
-            Login
-          </NavLink>
-        </div>
+        <>
+          <div className="nav-link">
+            <NavLink to="/danceSearch">
+              Dance Search
+            </NavLink>
+          </div>
+          <div className="nav-link">
+            <NavLink to="/login">
+              Login
+            </NavLink>
+          </div>
+        </>
       )}
     </nav>
   );
