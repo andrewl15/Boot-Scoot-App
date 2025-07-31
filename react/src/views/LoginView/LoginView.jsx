@@ -45,27 +45,41 @@ export default function LoginView({ onLogin }) {
 
   return (
     <div id="view-login">
-      <h2>Login</h2>
+      <form onSubmit={handleSubmit} className={styles.loginForm}>
+        <h2 className={styles.formTitle}>Login</h2>
 
-      <Notification notification={notification} clearNotification={() => setNotification(null)} />
+        {notification && (
+          <Notification notification={notification} clearNotification={() => setNotification(null)} />
+        )}
 
-      <form onSubmit={handleSubmit}>
-
-        <div className="form-control">
-          <label htmlFor="username">Username:</label>
-          <input type="text" id="username" value={username} size="50" required autoFocus autoComplete="username"
-              onChange={ event => setUsername(event.target.value)} />
+        <div className={styles.formControl}>
+          <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            value={username}
+            required
+            autoFocus
+            autoComplete="username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </div>
 
-        <div className="form-control">
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" value={password} size="50" required
-              onChange={ event => setPassword(event.target.value)} />
+        <div className={styles.formControl}>
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
+        <button type="submit" className={styles.formButton}>Login</button>
 
-        <button type="submit" className={`btn-primary ${styles.formButton}`}>Sign in</button>
-        <Link to="/register">New? Register here!</Link>
+        <Link to="/register" className={styles.registerLink}>Register</Link>
       </form>
     </div>
+
   );
 }

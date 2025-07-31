@@ -45,16 +45,16 @@ export default function RegisterView() {
 
   return (
     <div id="view-register">
-      <h2>Register</h2>
+      <form onSubmit={handleSubmit} className={styles.registerForm}>
+        <h2 className={styles.formTitle}>Register</h2>
 
-      <Notification notification={notification} clearNotification={() => setNotification(null)} />
+        <Notification notification={notification} clearNotification={() => setNotification(null)} />
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-control">
-          <label htmlFor="username">Username:</label>
+        <div className={styles.formControl}>
           <input
             type="text"
             id="username"
+            placeholder="Username"
             value={username}
             size="50"
             required
@@ -64,11 +64,11 @@ export default function RegisterView() {
           />
         </div>
 
-        <div className="form-control">
-          <label htmlFor="password">Password:</label>
+        <div className={styles.formControl}>
           <input
             type="password"
             id="password"
+            placeholder="Password"
             value={password}
             size="50"
             required
@@ -76,11 +76,11 @@ export default function RegisterView() {
           />
         </div>
 
-        <div className="form-control">
-          <label htmlFor="confirmPassword">Confirm Password:</label>
+        <div className={styles.formControl}>
           <input
             type="password"
             id="confirmPassword"
+            placeholder="Confirm Password"
             value={confirmPassword}
             size="50"
             required
@@ -88,10 +88,9 @@ export default function RegisterView() {
           />
         </div>
 
-        <button type="submit" className={`btn-primary ${styles.formButton}`}>
-          Register
-        </button>
-        <Link to="/login">Have an account? Log-in</Link>
+        <button type="submit" className={styles.formButton}>Register</button>
+
+        <Link to="/login" className={styles.loginLink}>Login</Link>
       </form>
     </div>
   );

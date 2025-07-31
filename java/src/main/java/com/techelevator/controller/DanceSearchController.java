@@ -36,7 +36,6 @@ public class DanceSearchController {
             String baseUrl = "https://www.copperknob.co.uk/search";
             String fullUrl = baseUrl + "?Search=" + URLEncoder.encode(query, StandardCharsets.UTF_8)
                     + "&Beat=-1&Level=Any&Wall=-1&Lang=Any&SearchType=Any";
-            System.out.println(fullUrl);
             Document doc = Jsoup.connect(fullUrl)
                     .userAgent("Mozilla/5.0")
                     .timeout(10_000)

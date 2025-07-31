@@ -11,7 +11,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE dance (
-	dance_id SERIAL,
+	dance_id integer NOT NULL,
 	user_id integer NOT NULL,
 	is_learned boolean NOT NULL DEFAULT false,
 	dance_name varchar(100) NOT NULL,

@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -37,6 +38,7 @@ public class JdbcDanceDao implements DanceDao {
     public Dance addDance(int userId, Dance dance) {
         Dance newDance = null;
         String sql = "INSERT INTO dance (\r\n" + //
+                "    dance_id,\r\n" + //
                 "    user_id,\r\n" + //
                 "    is_learned,\r\n" + //
                 "    dance_name,\r\n" + //
@@ -48,9 +50,10 @@ public class JdbcDanceDao implements DanceDao {
                 "    copperknob_link,\r\n" + //
                 "    demo_url,\r\n" + //
                 "    tutorial_url    \r\n" + //
-                ") VALUES (?,?,?,?,?,?,?,?,?,?,?) returning dance_id;";
+                ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?) returning dance_id;";
         try {
             int danceId = jdbcTemplate.queryForObject(sql, int.class,
+                dance.getDanceId(),
                 dance.getUserId(), dance.isLearned(), dance.getDanceName(),
                 dance.getSongName(), dance.getArtistName(), dance.getCount(),
                 dance.getWalls(), dance.getLevel(), dance.getCopperknobLink(),
@@ -66,7 +69,19 @@ public class JdbcDanceDao implements DanceDao {
     }
 
     public List<Dance> getDancesByUserId(int userId) {
-        return null;
+        List<Dance> dances = new ArrayList<>();
+        String sql = "SELECT * FROM dance WHERE user_id = ?;";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+            while (results.next()) {
+                dances.add(mapRowToDance(results));
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException(e.getMessage());
+        }
+        return dances;
     }
 
     private Dance mapRowToDance(SqlRowSet results) {

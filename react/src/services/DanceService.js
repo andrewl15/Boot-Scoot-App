@@ -13,7 +13,14 @@ export default {
                 query: searchTerm
             }
         });
-    }
+    },
 
+    addDance(danceUrl) {
+        return axios.post('/dance/', { url: danceUrl });
+    },
+
+    getDancesByUserId(userId) {
+        return axios.get(`/dance/userDanceList/${userId}`);
+    },
 
 }
