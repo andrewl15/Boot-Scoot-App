@@ -26,12 +26,22 @@
 }
 
 .logo {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.logoContent {
+    display: flex;
+    align-items: center;
     font-size: 1.4rem;
     font-weight: bold;
     color: var(--accent-orange);
-    margin: 0;
-    text-decoration: none;
+    gap: 0.4rem;
+    /* space between text and icon */
 }
+
+
 
 /* Burger on the right */
 .burger {

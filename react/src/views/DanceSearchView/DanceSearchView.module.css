@@ -1,8 +1,14 @@
+:root {
+    --bg-dark: #313238;
+    --accent-orange: #cd8032;
+    --text-light: #fff7f0;
+    --font-main: 'Segoe UI', sans-serif;
+}
+
 .container {
     margin: 0 auto;
     padding: 1rem;
     font-family: Arial, sans-serif;
-    background-color: #ffffff;
 }
 
 .heading {
@@ -34,9 +40,17 @@
     /* take half width with button */
     padding: 0.6rem 0.75rem;
     font-size: 1rem;
-    border: 1px solid #ccc;
+    font-weight: 500;
     border-radius: 8px;
     outline-offset: 2px;
+    background-color: var(--bg-dark);
+    color: #fff !important;
+}
+
+.input::placeholder {
+  color: #fff !important;
+  opacity: 1; /* optional – makes sure it's fully opaque */
+  font-weight: 500;
 }
 
 .searchButton {
@@ -61,7 +75,8 @@
 
 
 .danceResult {
-    background-color: #fff;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     padding: 1rem;
@@ -99,7 +114,7 @@
 .metaRow {
     margin-top: 0.5rem;
     font-size: 0.95rem;
-    color: #555;
+    color:silver;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
@@ -124,7 +139,7 @@
     display: inline-block;
     margin-top: 0.5rem;
     text-decoration: underline;
-    color: black;
+    color: silver;
     font-size: 0.95rem;
 }
 

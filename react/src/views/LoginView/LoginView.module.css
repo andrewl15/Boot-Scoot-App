@@ -59,7 +59,8 @@ input[type="password"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: var(--accent-orange);
+    border: 2px solid var(--accent-orange);
+
 }
 
 input[type="text"]::placeholder,

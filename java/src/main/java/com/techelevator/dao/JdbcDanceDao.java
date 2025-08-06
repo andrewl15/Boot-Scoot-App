@@ -84,6 +84,37 @@ public class JdbcDanceDao implements DanceDao {
         return dances;
     }
 
+    public Dance updateDance(Dance dance) {
+        Dance updatedDance = null;
+        String sql = "UPDATE dance SET " +
+                "is_learned = ?, " +
+                "dance_name = ?, " +
+                "song_name = ?, " +
+                "artist_name = ?, " +
+                "count = ?, " +
+                "walls = ?, " +
+                "level = ?, " +
+                "copperknob_link = ?, " +
+                "demo_url = ?, " +
+                "tutorial_url = ? " +
+                "WHERE dance_id = ?;";
+        try {
+            int rowsAffected = jdbcTemplate.update(sql,
+                    dance.isLearned(), dance.getDanceName(), dance.getSongName(),
+                    dance.getArtistName(), dance.getCount(), dance.getWalls(),
+                    dance.getLevel(), dance.getCopperknobLink(),
+                    dance.getDemoUrl(), dance.getTutorialUrl(),
+                    dance.getDanceId());
+
+            updatedDance = getDanceById(rowsAffected);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException(e.getMessage());
+        }
+        return updatedDance;
+    }       
+
     private Dance mapRowToDance(SqlRowSet results) {
         Dance dance = new Dance();
         dance.setDanceId(results.getInt("dance_id"));

@@ -6,7 +6,7 @@ import HomeView from './views/HomeView/HomeView';
 import LoginView from './views/LoginView/LoginView';
 import LogoutView from './views/LogoutView';
 import RegisterView from './views/RegisterView/RegisterView';
-import UserProfileView from './views/UserProfileView/UserProfileView';
+// import UserProfileView from './views/UserProfileView/UserProfileView';
 import MainNav from './components/MainNav/MainNav';
 import ProtectedRoute from './components/ProtectedRoute';
 import axios from 'axios';
@@ -78,14 +78,14 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
+              {/* <Route
                 path="/userProfile"
                 element={
                   <ProtectedRoute>
                     <UserProfileView />
                   </ProtectedRoute>
                 }
-              />
+              /> */}
             </Routes>
           </main>
         </UserContext.Provider>

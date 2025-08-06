@@ -2,6 +2,8 @@ import { useContext, useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import styles from './MainNav.module.css';
+import { FaHatCowboy } from "react-icons/fa6";
+
 
 export default function MainNav() {
   const user = useContext(UserContext);
@@ -18,7 +20,12 @@ export default function MainNav() {
   return (
     <nav className={styles.mainNav}>
       <div className={styles.navHeader}>
-        <h1 ><Link className={styles.logo} to={"/"}>Boot Scoot</Link> </h1>
+        <Link className={styles.logo} to="/">
+          <span className={styles.logoContent}>
+            Boot Scoot <FaHatCowboy />
+          </span>
+        </Link>
+
         <div
           className={`${styles.burger} ${menuOpen ? styles.open : ''}`}
           onClick={toggleMenu}
@@ -40,17 +47,17 @@ export default function MainNav() {
         </NavLink>
         {user ? (
           <>
-            <NavLink to="/userProfile" className={({ isActive }) =>
+            {/* <NavLink to="/userProfile" className={({ isActive }) =>
               isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
               onClick={closeMenu}>Profile
-            </NavLink>
+            </NavLink> */}
             <NavLink to="/danceSearch" className={({ isActive }) =>
               isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
               onClick={closeMenu}>Search Dances
             </NavLink>
             <NavLink to={`/userDanceList/${user.id}`} className={({ isActive }) =>
               isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
-              onClick={closeMenu}>My Dances
+              onClick={closeMenu}>Dance List
             </NavLink>
             <Link to="/logout" className={styles.navItem} onClick={closeMenu}>Logout</Link>
           </>
