@@ -3,7 +3,6 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import DanceService from "../../services/DanceService";
 import { UserContext } from "../../context/UserContext";
 import styles from "./DanceSearchView.module.css";
-import { MdOutlineAddBox } from "react-icons/md";
 import { MdArrowForward } from "react-icons/md";
 
 
@@ -37,10 +36,10 @@ export default function DanceSearchView() {
         }
 
         DanceService.addDance(link)
-            .then(res => {
+            .then(() => {
                 notify("Dance added to your list!", "success");
             })
-            .catch(err => {
+            .catch(() => {
                 alert("Something went wrong while saving the dance.");
             });
     }
@@ -121,10 +120,9 @@ export default function DanceSearchView() {
 
                                 <div className={styles.actions}>
                                     <a className={styles.link} href={dance.url} target="_blank" rel="noopener noreferrer">
-                                        View on Copperknob
+                                        Copperknob Page
                                     </a>
                                     <button className={styles.addButton} onClick={() => handleAddDance(dance.url)}>
-                                        <MdOutlineAddBox size={20} />
                                         Add to My List
                                     </button>
                                 </div>
