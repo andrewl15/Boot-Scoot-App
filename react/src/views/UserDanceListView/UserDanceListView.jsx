@@ -15,9 +15,40 @@ export default function UserDanceListView() {
     const [editedDances, setEditedDances] = useState({});
     const debounceTimeout = useRef(null);
     const [filterOpen, setFilterOpen] = useState(false);
+    const [windowPosition, setWindowPosition] = useState({ top: 0, left: 0 });
+    const [closing, setClosing] = useState(false);
+    const buttonRef = useRef(null);
+    const windowRef = useRef(null);
+    const [selectedFilter, setSelectedFilter] = useState(null);
+
+    function selectFilter(option) {
+        setSelectedFilter(option); // set the filter
+        startClosing();            // close the filter window with animation
+    }
+
 
     function openFilterWindow() {
-        setFilterOpen(!filterOpen);
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setWindowPosition({
+                top: rect.bottom + window.scrollY + 8,
+                left: rect.right + window.scrollX,
+            });
+        }
+        if (!filterOpen) {
+            setFilterOpen(true);
+            setClosing(false);
+        } else {
+            startClosing();
+        }
+    }
+
+    function startClosing() {
+        setClosing(true);
+        setTimeout(() => {
+            setFilterOpen(false);
+            setClosing(false);
+        }, 300); // match CSS animation duration
     }
 
     function handleToggleLearned(danceToUpdate) {
@@ -50,28 +81,59 @@ export default function UserDanceListView() {
             });
     }
 
+    useEffect(() => {
+        function handleClickOutside(e) {
+            if (
+                windowRef.current &&
+                !windowRef.current.contains(e.target) &&
+                !buttonRef.current.contains(e.target)
+            ) {
+                startClosing();
+            }
+        }
 
+        function handleScroll() {
+            startClosing();
+        }
 
+        if (filterOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+            window.addEventListener("scroll", handleScroll, true);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+            window.removeEventListener("scroll", handleScroll, true);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            window.removeEventListener("scroll", handleScroll, true);
+        };
+    }, [filterOpen]);
 
 
     useEffect(() => {
         if (user) {
             DanceService.getDancesByUserId(user.id)
                 .then(response => {
-                    // Sort learned first
-                    const sorted = [...response.data].sort((a, b) => {
-                        return (b.learned === true) - (a.learned === true);
+                    // Normalize learned to boolean
+                    const normalized = response.data.map(dance => ({
+                        ...dance,
+                        learned: dance.learned === true || dance.learned === "true"
+                    }));
+
+                    // Sort Not Learned first
+                    const sorted = [...normalized].sort((a, b) => {
+                        return (a.learned === true) - (b.learned === true);
                     });
 
                     setDances(sorted);
-                    setFilteredDances(sorted); // initially show all
+                    setFilteredDances(sorted); // show everything initially
                 })
                 .catch(error => {
-                    console.error("Error fetching uUserDanceCardser dances:", error);
+                    console.error("Error fetching user dances:", error);
                 });
         }
     }, [user]);
-
 
     // debounce search effect
     useEffect(() => {
@@ -80,22 +142,30 @@ export default function UserDanceListView() {
         }
 
         debounceTimeout.current = setTimeout(() => {
-            if (!searchTerm.trim()) {
-                setFilteredDances(dances);
-                return;
-            }
-            const lowerSearch = searchTerm.toLowerCase();
+            let filtered = [...dances];
 
-            const filtered = dances.filter(dance =>
-                dance.songName.toLowerCase().includes(lowerSearch) ||
-                dance.danceName.toLowerCase().includes(lowerSearch)
-            );
+            // Apply search
+            if (searchTerm.trim()) {
+                const lowerSearch = searchTerm.toLowerCase();
+                filtered = filtered.filter(
+                    dance =>
+                        dance.songName.toLowerCase().includes(lowerSearch) ||
+                        dance.danceName.toLowerCase().includes(lowerSearch)
+                );
+            }
+
+            // Apply Learned/Not Learned filter only if selected
+            if (selectedFilter === "Learned") {
+                filtered = filtered.filter(dance => dance.learned === true);
+            } else if (selectedFilter === "Not Learned") {
+                filtered = filtered.filter(dance => dance.learned === false);
+            }
 
             setFilteredDances(filtered);
-        }, 300);
+        }, 200);
 
         return () => clearTimeout(debounceTimeout.current);
-    }, [searchTerm, dances]);
+    }, [searchTerm, dances, selectedFilter]);
 
     return (
         <>
@@ -109,9 +179,38 @@ export default function UserDanceListView() {
                         onChange={e => setSearchTerm(e.target.value)}
                         aria-label="Search dances by song or dance name"
                     />
-                    <button className={styles.searchButton} onClick={openFilterWindow} aria-label="Search">
+                    <button
+                        className={styles.filterButton}
+                        onClick={openFilterWindow}
+                        ref={buttonRef}
+                        aria-label="Filter"
+                    >
                         <IoFilterSharp size={30} />
                     </button>
+                    {filterOpen && (
+                        <div
+                            ref={windowRef}
+                            className={`${styles.filterWindow} ${closing ? styles.closing : ""}`}
+                            style={{
+                                top: windowPosition.top + 8,
+                                left: windowPosition.left - 220,
+                            }}
+                        >
+                            <h4 className={styles.filterTitle}>Filters</h4>
+                            <div className={styles.filterOptions}>
+                                {["Learned", "Not Learned"].map(option => (
+                                    <button
+                                        key={option}
+                                        onClick={() => selectFilter(option)}
+                                        className={`${styles.filterOption} ${selectedFilter === option ? styles.active : ""
+                                            }`}
+                                    >
+                                        {option}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                 </div>
                 {filteredDances.length > 0 ? (
@@ -141,11 +240,6 @@ export default function UserDanceListView() {
                     </div>
                 )}
             </div>
-            {filterOpen &&
-                <div className={styles.filterWindow}>
-                    hi
-                </div>
-            }
         </>
     );
 }

@@ -34,7 +34,7 @@
   font-weight: 500;
 }
 
-.searchButton {
+.filterButton {
   flex: 1;
   max-width: 60px;
   background-color: var(--accent-orange);
@@ -46,6 +46,88 @@
   justify-content: center;
   align-items: center;
   transition: background-color 0.2s ease;
+}
+
+.filterWindow {
+  position: absolute;
+  border: 1px solid #ffffff ;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 187px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transform-origin: top right;
+  transform: scale(0);
+  opacity: 0;
+  animation: expand 0.3s forwards;
+  z-index: 1000;
+  color: var(--text-light);
+  font-family: var(--font-main);
+}
+
+.filterTitle {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.filterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+}
+
+.filterOption {
+  background: #3d3e44;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  color: var(--text-light);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.filterOption:hover {
+  background: #4b4c52;
+  border-color: var(--accent-orange);
+}
+
+.filterOption.active {
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: #fff;
+}
+
+
+.filterWindow.closing {
+  animation: shrink 0.2s forwards;
+}
+
+@keyframes expand {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shrink {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
 }
 
 .searchButton svg {
@@ -81,4 +163,26 @@
   padding: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+}
+
+/* Entering */
+.danceEnter {
+  opacity: 0;
+  transform: translateY(-10px); /* start slightly above */
+}
+.danceEnterActive {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Exiting */
+.danceExit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.danceExitActive {
+  opacity: 0;
+  transform: translateY(-10px); /* exit slightly above */
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
