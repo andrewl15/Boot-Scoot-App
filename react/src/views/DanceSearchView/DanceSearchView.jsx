@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import DanceService from "../../services/DanceService";
 import { UserContext } from "../../context/UserContext";
+import DanceSearchCard from "../../components/DanceSearchView/DanceSearchCard";
 import styles from "./DanceSearchView.module.css";
 import { MdArrowForward } from "react-icons/md";
-
-
+import { FaSearch } from "react-icons/fa";
 
 export default function DanceSearchView() {
     const user = useContext(UserContext);
@@ -86,7 +86,7 @@ export default function DanceSearchView() {
                     <input
                         type="text"
                         className={styles.input}
-                        placeholder="Search for a dance..."
+                        placeholder="Search..."
                         onChange={e => setSearchTerm(e.target.value)}
                     />
                     <button className={styles.searchButton} onClick={getSearchResults} aria-label="Search">
@@ -106,31 +106,14 @@ export default function DanceSearchView() {
                                 exitActive: styles.resultExitActive
                             }}
                         >
-                            <div key={index} className={styles.danceResult}>
-                                <div className={styles.resultHeader}>
-                                    <h2 className={styles.danceTitle}>{dance.title}</h2>
-                                    <span className={styles.badge}>{dance.level}</span>
-                                </div>
-
-                                <div className={styles.metaRow}>
-                                    <p><strong>Artist:</strong> {dance.artist}</p>
-                                    <p><strong>Wall:</strong> {dance.wall}</p>
-                                    <p><strong>Count:</strong> {dance.count}</p>
-                                </div>
-
-                                <div className={styles.actions}>
-                                    <a className={styles.link} href={dance.url} target="_blank" rel="noopener noreferrer">
-                                        Copperknob Page
-                                    </a>
-                                    <button className={styles.addButton} onClick={() => handleAddDance(dance.url)}>
-                                        Add to My List
-                                    </button>
-                                </div>
-                            </div>
-
+                            <DanceSearchCard
+                                dance={dance}
+                                handleAddDance={handleAddDance}
+                            />
                         </CSSTransition>
                     ))}
                 </TransitionGroup>
+
 
             </div>
             {showNotification && (

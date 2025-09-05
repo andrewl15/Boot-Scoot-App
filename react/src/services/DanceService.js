@@ -23,8 +23,8 @@ export default {
         return axios.get(`/dance/userDanceList/${userId}`);
     },
 
-    updateDance(danceId, updatedDance) {
-        return axios.put(`/dance/${danceId}`, updatedDance);
+    updateLearnedStatus(danceId, isLearned) {
+        return axios.patch(`/dance/${danceId}/learned?isLearned=${isLearned}`);
     },
 
 }

@@ -8,5 +8,6 @@ public interface DanceDao {
     Dance getDanceById(int id);
     Dance addDance(int userId, Dance dance);
     List<Dance> getDancesByUserId(int userId);
-    Dance updateDance(Dance dance);
+    Dance updateLearnedStatus(Dance dance);
+
 }

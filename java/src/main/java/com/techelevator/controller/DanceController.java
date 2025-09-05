@@ -13,12 +13,15 @@ import org.jsoup.select.Elements;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -88,17 +91,15 @@ public class DanceController {
         }
     }
 
-    @PutMapping("/{id}")
-    public Dance updateDance(@PathVariable int id, @Valid @RequestBody Dance incoming) {
+    @PatchMapping("/{id}/learned")
+    public Dance updateLearnedStatus(@PathVariable int id, @RequestParam boolean isLearned) {
         Dance existing = danceDao.getDanceById(id);
         if (existing == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dance not found");
         }
-        try {
-            return danceDao.updateDance(incoming);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-        }
+
+        existing.setLearned(isLearned);
+        return danceDao.updateLearnedStatus(existing);
     }
 
     public Dance scrapeDanceFromCopperknob(String url, int userId) throws IOException {
@@ -106,7 +107,7 @@ public class DanceController {
                 .userAgent("Mozilla/5.0")
                 .timeout(10000)
                 .get();
-        //dance id
+        // dance id
         int copperknobId = Integer.parseInt(extractDanceIdFromUrl(url));
         // Title
         String danceName = doc.selectFirst("div.sectionbar h2") != null

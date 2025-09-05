@@ -84,26 +84,13 @@ public class JdbcDanceDao implements DanceDao {
         return dances;
     }
 
-    public Dance updateDance(Dance dance) {
+    public Dance updateLearnedStatus(Dance dance) {
         Dance updatedDance = null;
-        String sql = "UPDATE dance SET " +
-                "is_learned = ?, " +
-                "dance_name = ?, " +
-                "song_name = ?, " +
-                "artist_name = ?, " +
-                "count = ?, " +
-                "walls = ?, " +
-                "level = ?, " +
-                "copperknob_link = ?, " +
-                "demo_url = ?, " +
-                "tutorial_url = ? " +
-                "WHERE dance_id = ?;";
+        String sql = "update dance set is_learned = ? where dance_id = ?";
+
         try {
             int rowsAffected = jdbcTemplate.update(sql,
-                    dance.isLearned(), dance.getDanceName(), dance.getSongName(),
-                    dance.getArtistName(), dance.getCount(), dance.getWalls(),
-                    dance.getLevel(), dance.getCopperknobLink(),
-                    dance.getDemoUrl(), dance.getTutorialUrl(),
+                    dance.isLearned(),
                     dance.getDanceId());
 
             updatedDance = getDanceById(rowsAffected);
