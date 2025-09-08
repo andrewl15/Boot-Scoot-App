@@ -38,27 +38,27 @@ import jakarta.validation.Valid;
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/dance")
 public class DanceController {
-    private DanceDao danceDao;
-    private UserDao userDao;
+
+    private final DanceDao danceDao;
+    private final UserDao userDao;
 
     public DanceController(DanceDao danceDao, UserDao userDao) {
         this.danceDao = danceDao;
         this.userDao = userDao;
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public Dance getDanceById(@PathVariable int id) {
-        Dance output = null;
-
+        Dance dance;
         try {
-            output = danceDao.getDanceById(id);
+            dance = danceDao.getDanceById(id);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
-        if (output == null) {
+        if (dance == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dance not found");
         }
-        return output;
+        return dance;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -74,7 +74,7 @@ public class DanceController {
             // Scrape the CopperKnob page and build a Dance object
             Dance scrapedDance = scrapeDanceFromCopperknob(request.url, userId);
 
-            // Save the dance to the DB
+            // Save the dance to the DB (handles duplicates gracefully)
             return danceDao.addDance(userId, scrapedDance);
 
         } catch (Exception e) {
@@ -92,14 +92,19 @@ public class DanceController {
     }
 
     @PatchMapping("/{id}/learned")
-    public Dance updateLearnedStatus(@PathVariable int id, @RequestParam boolean isLearned) {
-        Dance existing = danceDao.getDanceById(id);
-        if (existing == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dance not found");
+    public void updateLearnedStatus(@PathVariable int id, Principal principal, @RequestParam boolean isLearned) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User must be authenticated");
         }
 
-        existing.setLearned(isLearned);
-        return danceDao.updateLearnedStatus(existing);
+        int userId = userDao.getUserByUsername(principal.getName()).getId();
+
+        try {
+            // DAO method now returns void
+            danceDao.updateLearnedStatus(userId, id, isLearned);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
     }
 
     public Dance scrapeDanceFromCopperknob(String url, int userId) throws IOException {

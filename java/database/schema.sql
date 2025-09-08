@@ -1,32 +1,38 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS dance, users;
+-- Drop tables if they exist
+DROP TABLE IF EXISTS user_dance;
+DROP TABLE IF EXISTS dance;
+DROP TABLE IF EXISTS users;
 
+-- Users table
 CREATE TABLE users (
-	user_id SERIAL,
-	username varchar(50) NOT NULL UNIQUE,
-	password_hash varchar(200) NOT NULL,
-	role varchar(50) NOT NULL,
-	CONSTRAINT PK_user PRIMARY KEY (user_id)
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(200) NOT NULL,
+    role VARCHAR(50) NOT NULL
 );
 
+-- Shared dances table
 CREATE TABLE dance (
-	dance_id integer NOT NULL,
-	user_id integer NOT NULL,
-	is_learned boolean NOT NULL DEFAULT false,
-	dance_name varchar(100) NOT NULL,
-	song_name varchar(100) NOT NULL,
-	artist_name varchar(100) NOT NULL,
-	count integer NOT NULL,
-	walls integer NOT NULL,
-	level varchar(50) NOT NULL,
-	copperknob_link varchar(200),
-	demo_url varchar(200),
-	tutorial_url varchar(200),
-	CONSTRAINT PK_dance PRIMARY KEY (dance_id)
+    dance_id SERIAL PRIMARY KEY,
+    dance_name VARCHAR(100) NOT NULL,
+    song_name VARCHAR(100) NOT NULL,
+    artist_name VARCHAR(100) NOT NULL,
+    count INTEGER NOT NULL,
+    walls INTEGER NOT NULL,
+    level VARCHAR(50) NOT NULL,
+    copperknob_link VARCHAR(200),
+    demo_url VARCHAR(200),
+    tutorial_url VARCHAR(200)
 );
 
-alter table dance add constraint FK_dance_user foreign key (user_id) references users(user_id);
-
+-- User-dance mapping table (tracks learned status)
+CREATE TABLE user_dance (
+    user_id INTEGER NOT NULL REFERENCES users(user_id),
+    dance_id INTEGER NOT NULL REFERENCES dance(dance_id),
+    is_learned BOOLEAN NOT NULL DEFAULT FALSE,
+    PRIMARY KEY(user_id, dance_id)
+);
 
 COMMIT TRANSACTION;

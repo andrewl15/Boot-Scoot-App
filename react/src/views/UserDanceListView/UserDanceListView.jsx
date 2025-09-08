@@ -52,12 +52,10 @@ export default function UserDanceListView() {
     }
 
     function handleToggleLearned(danceToUpdate) {
-        const currentValue =
-            editedDances[danceToUpdate.danceId]?.learned ?? danceToUpdate.learned;
-
+        const currentValue = editedDances[danceToUpdate.danceId]?.learned ?? danceToUpdate.learned;
         const newValue = !currentValue;
 
-        // Optimistic update
+        // Optimistic update: update local state immediately
         setEditedDances(prev => ({
             ...prev,
             [danceToUpdate.danceId]: {
@@ -66,11 +64,12 @@ export default function UserDanceListView() {
             }
         }));
 
+        // Call backend to persist
         DanceService.updateLearnedStatus(danceToUpdate.danceId, newValue)
             .catch(error => {
                 console.error("Error updating dance:", error);
 
-                // Rollback
+                // Rollback if request fails
                 setEditedDances(prev => ({
                     ...prev,
                     [danceToUpdate.danceId]: {
@@ -80,6 +79,7 @@ export default function UserDanceListView() {
                 }));
             });
     }
+
 
     useEffect(() => {
         function handleClickOutside(e) {

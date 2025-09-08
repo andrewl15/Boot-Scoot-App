@@ -24,7 +24,10 @@ export default {
     },
 
     updateLearnedStatus(danceId, isLearned) {
-        return axios.patch(`/dance/${danceId}/learned?isLearned=${isLearned}`);
-    },
+        return axios.patch(`/dance/${danceId}/learned`, null, {
+            params: { isLearned }
+        });
+    }
+
 
 }
