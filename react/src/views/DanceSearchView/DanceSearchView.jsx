@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import DanceService from "../../services/DanceService";
 import { UserContext } from "../../context/UserContext";
-import DanceSearchCard from "../../components/DanceSearchView/DanceSearchCard";
+import DanceSearchCard from "../../components/DanceSearchComponents/DanceSearchCard";
 import styles from "./DanceSearchView.module.css";
 import { MdArrowForward } from "react-icons/md";
 import { FaSearch } from "react-icons/fa";

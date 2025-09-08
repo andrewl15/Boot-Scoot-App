@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./DanceSearchCard.module.css";
 
 export default function DanceSearchResult({ dance, handleAddDance }) {

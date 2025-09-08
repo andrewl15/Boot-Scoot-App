@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./UserDanceCard.module.css";
 
 export default function DanceCard({ dance, editedDances, handleToggleLearned }) {

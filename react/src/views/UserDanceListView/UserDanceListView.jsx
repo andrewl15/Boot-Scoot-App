@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "../../context/UserContext";
 import DanceService from "../../services/DanceService";
-import UserDanceCard from "../../components/UserDanceCard/UserDanceCard";
+import UserDanceCard from "../../components/UserDanceComponents/UserDanceCard";
 import styles from "./UserDanceListView.module.css";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { FaSave } from "react-icons/fa";
 import { IoFilterSharp } from "react-icons/io5";
+
 
 export default function UserDanceListView() {
     const user = useContext(UserContext);
@@ -22,7 +22,7 @@ export default function UserDanceListView() {
     const [selectedFilter, setSelectedFilter] = useState(null);
 
     function selectFilter(option) {
-        setSelectedFilter(option); // set the filter
+        setSelectedFilter(prev => (prev === option ? null : option)); // toggle
         startClosing();            // close the filter window with animation
     }
 
@@ -142,30 +142,42 @@ export default function UserDanceListView() {
         }
 
         debounceTimeout.current = setTimeout(() => {
-            let filtered = [...dances];
+            // Merge original dances with edited values
+            let mergedDances = dances.map(dance => {
+                if (editedDances[dance.danceId]) {
+                    return { ...dance, ...editedDances[dance.danceId] };
+                }
+                return dance;
+            });
+
+            // Sort: Not Learned first
+            mergedDances = mergedDances.sort((a, b) => {
+                return (a.learned === true) - (b.learned === true);
+            });
 
             // Apply search
             if (searchTerm.trim()) {
                 const lowerSearch = searchTerm.toLowerCase();
-                filtered = filtered.filter(
+                mergedDances = mergedDances.filter(
                     dance =>
                         dance.songName.toLowerCase().includes(lowerSearch) ||
                         dance.danceName.toLowerCase().includes(lowerSearch)
                 );
             }
 
-            // Apply Learned/Not Learned filter only if selected
+            // Apply Learned/Not Learned filter
             if (selectedFilter === "Learned") {
-                filtered = filtered.filter(dance => dance.learned === true);
+                mergedDances = mergedDances.filter(dance => dance.learned === true);
             } else if (selectedFilter === "Not Learned") {
-                filtered = filtered.filter(dance => dance.learned === false);
+                mergedDances = mergedDances.filter(dance => dance.learned === false);
             }
 
-            setFilteredDances(filtered);
+            setFilteredDances(mergedDances);
         }, 200);
 
         return () => clearTimeout(debounceTimeout.current);
-    }, [searchTerm, dances, selectedFilter]);
+    }, [searchTerm, dances, selectedFilter, editedDances]);
+
 
     return (
         <>
