@@ -78,14 +78,6 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
-              {/* <Route
-                path="/userProfile"
-                element={
-                  <ProtectedRoute>
-                    <UserProfileView />
-                  </ProtectedRoute>
-                }
-              /> */}
             </Routes>
           </main>
         </UserContext.Provider>

@@ -47,10 +47,6 @@ export default function MainNav() {
         </NavLink>
         {user ? (
           <>
-            {/* <NavLink to="/userProfile" className={({ isActive }) =>
-              isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
-              onClick={closeMenu}>Profile
-            </NavLink> */}
             <NavLink to="/danceSearch" className={({ isActive }) =>
               isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
               onClick={closeMenu}>Search Dances
