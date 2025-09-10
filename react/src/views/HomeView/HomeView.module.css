@@ -20,7 +20,7 @@
     /* slightly smaller for phones */
     font-weight: 700;
     color: #313238;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.1rem;
     line-height: 1.2;
 }
 
@@ -33,14 +33,15 @@
     font-size: 1rem;
     /* mobile-friendly size */
     color: #717171;
-    margin-bottom: 2rem;
     font-weight: 500;
     line-height: 1.4;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* center cards horizontally */
     gap: 1.5rem;
 }
 
@@ -54,6 +55,8 @@
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 300px;
 }
 
 .card:hover {
